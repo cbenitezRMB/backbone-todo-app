@@ -1,0 +1,26 @@
+[
+	{
+		"title": "Learn Backbone.js",
+		"priority": 2,
+		"description": "Learn Backbone.js and all functionalities necesary to create a real-world JS App."
+	},
+	{
+		"title": "Add Mark as done functionality.",
+		"priority": 2,
+		"done": true
+	},
+	{
+		"title": "Create first JS App",
+		"priority": 3,
+		"done": true
+	},
+	{
+		"title": "Take a look at routes",
+		"priority": 5
+	},
+	{
+		"title": "Validate forms in Backbone",
+		"priority": 5
+	}
+
+]

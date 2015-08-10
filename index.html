@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Backbone example</title>
+	<link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body>
+
+	<div class="container">
+		<div class="row">
+			<nav class="navbar navbar-inverse">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">Backbone.js TODO</a>
+					</div>
+				</div>
+			</nav>
+
+			<div class="jumbotron" style="padding-top: 15px; padding-bottom: 15px;">
+				<h2>Tasks List</h2>
+				<p>
+					TODO generado con Backbone.js, Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+				</p>
+			</div>
+			
+			<div id="main">
+				<form action="#" id="addTaskForm" class="form-inline">
+					<span>New:</span>
+					<input type="text" placeholder="New task title" class="form-control" >
+					<input type="submit" value="Add task" class="btn btn-primary">
+				</form>
+				<div id="errors"></div>
+				<div class="row">
+					<div class="myTasks col-sm-12"></div>
+				</div>
+				<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+							</div>
+							<div class="modal-body">
+							Muchas cosas
+							</div>
+							<div class="modal-footer">
+							<a type="button" href="#home" class="btn btn-primary close-details">Close</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+
+
+	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="js/underscore-min.js"></script>
+	<script type="text/javascript" src="js/backbone-min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/scripts.js"></script>
+</body>
+</html>
