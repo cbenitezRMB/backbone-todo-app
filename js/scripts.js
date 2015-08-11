@@ -33,7 +33,30 @@ var App = (function(){
 			}
 		}
 		return render();
-	}
+	};
+
+	var domElement = function(config){
+		var conf = {
+			tag: 'div',
+			id: '',
+			classes: ''
+		};
+
+		if(config){
+			for(var prop in config){
+				if(conf.hasOwnProperty(prop)){
+					conf[prop] = config[prop];
+				}
+			}
+		}
+
+		var render = function(){
+			var myElement = $('<'+conf.tag+'><'+conf.tag+'/>').attr("id", conf.id).addClass(conf.classes);
+			return myElement;
+		}
+
+		return render();
+	};
 
 	App.vent = _.extend({}, Backbone.Events);
 
@@ -49,7 +72,6 @@ var App = (function(){
 			App.vent.trigger('task-details:hide');
 		},
 		showTaskDetails: function(param){
-			console.log('detalle'+param);
 			App.vent.trigger('task-details:show', param);
 		}
 	});
@@ -135,7 +157,9 @@ var App = (function(){
 			this.$el.remove();
 		},
 		throwError: function(errorMsg){
-			console.log('displaying errors...');
+			var errorContent2 = new domElement({
+				classes: 'alert alert-danger'
+			});
 			var errorContent = '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Error:</span>   '+errorMsg+'</div>';
 			$("#errors").html(errorContent);
 		},
@@ -229,7 +253,6 @@ var App = (function(){
 	App.Views.TaskDetails = Backbone.View.extend({
 		el: '#detailsModal',
 		initialize: function(){
-			console.log('initialize details');
 			App.vent.on('task-details:show', this.render, this);
 			App.vent.on('task-details:hide', this.hideDetailsModal, this);
 		},
@@ -253,7 +276,7 @@ var App = (function(){
 			{
 				title: 'Learn Backbone.js',
 				priority: 2,
-				description: "Learn Backbone.js and all functionalities necesary to create a real-world JS App."
+				description: "Learn Backbone.js and all necesary functionalities to create a real-world JS App."
 			},
 			{
 				title: 'Add "Mark as done" functionality.',
