@@ -31,11 +31,22 @@
 			</div>
 			
 			<div id="main">
-				<form action="#" id="addTaskForm" class="form-inline">
-					<span>New:</span>
-					<input type="text" placeholder="New task title" class="form-control" >
+				<form action="#" id="addTaskForm" class="form-block col-sm-8">
+					Title:
+					<br>
+					<div style="width: 50%;">
+						<input type="text" placeholder="New task title" class="form-control" >
+					</div>
+					<br>
+					<span>Description</span>
+					<br>
+					<textarea class="col-sm-5 form-control" placeholder="Enter a description for your new task..." rows="3"></textarea>
+					<div class="clearfix"></div>
+					<br>
 					<input type="submit" value="Add task" class="btn btn-primary">
+					
 				</form>
+				<div class="clearfix"></div>
 				<div id="errors"></div>
 				<div class="row">
 					<div class="myTasks col-sm-12">

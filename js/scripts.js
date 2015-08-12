@@ -294,12 +294,14 @@ var App = (function(){
 			{
 				title: 'Add "Mark as done" functionality.',
 				priority: 2,
-				done: true
+				done: true,
+				description: 'The task must change its styles when the checkbox is clicked'
 			},
 			{
 				title: 'Create first JS App',
 				priority: 3,
-				done: true
+				done: true,
+				description: 'Lorem ipsum etc etc...'
 			},
 			{
 				title: 'Take a look at routes',
