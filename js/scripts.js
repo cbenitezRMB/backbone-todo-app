@@ -100,6 +100,7 @@ var App = (function(){
 			'click #delete': 'deleteTaskFromCollection',
 			'click input[type="checkbox"]': 'check'
 		},
+		template: '#individual-task',
 		initialize: function(){
 			this.listenTo(this.model, 'change', this.render);
 			this.listenTo(this.model, 'destroy', this.removeTaskFromView);
@@ -117,16 +118,25 @@ var App = (function(){
 		},
 		render: function(index){
 			var badge = '<span class="badge">'+index+'</span>  ',
-				title = this.model.get('title'),
+				titleHtml = this.model.get('title'),
 				checkbox = '<input type="checkbox" class="pull-left" >',
 				details = '<a class="btn" href="#task-details/'+index+'">Details</a>';
 			if(this.model.get('done')){
 				badge = '<span style="background-color: green;" class="badge">'+index+'</span>  ';
-				title = '<strike>'+this.model.get('title')+'</strike>';
+				titleHtml = '<strike>'+this.model.get('title')+'</strike>';
 				checkbox = '<input type="checkbox" class="pull-left" checked >';
 			}
+			// set new properties to new object for template context
+			var templateContext = this.model.toJSON();
+			templateContext.badge = badge;
+			templateContext.index = index;
+			templateContext.titleHtml = titleHtml;
+			templateContext.checkbox = checkbox;
 
-			this.$el.html(checkbox+'<div class="col-sm-6">'+badge+title+'</div><div class="col-sm-4">'+details+this.editButton+' - '+this.deleteButton+'</div>');
+			var templateSource = $(this.template).html();
+			var templateCompiled = Handlebars.compile(templateSource);
+			var templateResult = templateCompiled(templateContext);
+			this.$el.html(templateResult);
 			this.$el.css({
 				'float': 'left',
 				'marginBottom': 15,
