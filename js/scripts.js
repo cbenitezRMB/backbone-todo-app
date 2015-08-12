@@ -228,14 +228,14 @@ var App = (function(){
 		submit: function(ev){
 			ev.preventDefault();
 			var input = this.$el.find('input[type="text"]'),
-				newTaskName = input.val();
+				newTaskName = input.val(),
+				textarea = this.$el.find("textarea");
 
 			if(!$.trim(newTaskName)){
 				this.throwError('Enter a title for the task');
 				input.focus();
 				return;
-			}
-			else{
+			}else{
 				this.removeErrorMessage();
 			}
 
@@ -244,9 +244,16 @@ var App = (function(){
 				input.focus();
 				return;
 			}else{
-				var newTask = new App.Models.Task({
-					title: newTaskName
-				});
+				if(!$.trim(textarea.val())){
+					var newTask = new App.Models.Task({
+						title: newTaskName
+					});
+				}else{
+					var newTask = new App.Models.Task({
+						title: newTaskName,
+						description: textarea.val()
+					});
+				}
 				this.collection.add(newTask);
 				input.val('').focus();
 			}
