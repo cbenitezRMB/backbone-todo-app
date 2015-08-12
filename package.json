@@ -9,6 +9,7 @@
     "grunt-cli": "^0.1.13",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-express": "^1.4.1",
+    "grunt-open": "^0.2.3",
     "open": "0.0.5"
   }
 }

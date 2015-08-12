@@ -1,6 +1,8 @@
 module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-express');
+	grunt.loadNpmTasks('grunt-open');
+	var hostPort = 9000;
 	// Project configuration.
 	grunt.initConfig({
 		watch: {
@@ -14,13 +16,18 @@ module.exports = function(grunt) {
 		express: {
 			all: {
 				options: {
-					port: 9000,
+					port: hostPort,
 					hostname: 'localhost',
 					bases: ['.'],
 					livereload: true
 				}
 			}
+		},
+		open: {
+			dev:{
+				path: 'http://localhost:'+hostPort
+			}
 		}
 	});
-	grunt.registerTask('server', ['express','watch']);
+	grunt.registerTask('server', ['express','open','watch']);
 };
