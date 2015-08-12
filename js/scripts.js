@@ -1,4 +1,5 @@
 var App = (function(){
+	"use strict";
 	var App = {
 		Models: {},
 		Collections: {},
@@ -6,8 +7,7 @@ var App = (function(){
 		Router:{},
 		vent: {},
 		config: {
-			localStorageName: 'todosTest1',
-			savedInLocalStorage: false
+			localStorageName: 'todosTest1'
 		}
 	};
 
@@ -118,14 +118,15 @@ var App = (function(){
 		render: function(index){
 			var badge = '<span class="badge">'+index+'</span>  ',
 				title = this.model.get('title'),
-				checkbox = '<input type="checkbox" class="pull-left" >';
+				checkbox = '<input type="checkbox" class="pull-left" >',
+				details = '<a class="btn" href="#task-details/'+index+'">Details</a>';
 			if(this.model.get('done')){
 				badge = '<span style="background-color: green;" class="badge">'+index+'</span>  ';
 				title = '<strike>'+this.model.get('title')+'</strike>';
 				checkbox = '<input type="checkbox" class="pull-left" checked >';
 			}
 
-			this.$el.html(checkbox+'<div class="col-sm-6">'+badge+title+'</div><div class="col-sm-4">'+'<a class="btn" href="#task-details/'+index+'">Details</a>'+this.editButton+' - '+this.deleteButton+'</div>');
+			this.$el.html(checkbox+'<div class="col-sm-6">'+badge+title+'</div><div class="col-sm-4">'+details+this.editButton+' - '+this.deleteButton+'</div>');
 			this.$el.css({
 				'float': 'left',
 				'marginBottom': 15,
@@ -298,7 +299,6 @@ var App = (function(){
 			}
 		]);
 	}else{
-		App.config.savedInLocalStorage = true;
 		tasksListFromLocalStorage = JSON.parse((localStorage.getItem(App.config.localStorageName)));
 		tasks = new App.Collections.Tasks(tasksListFromLocalStorage);
 	}
