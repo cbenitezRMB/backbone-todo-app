@@ -127,10 +127,10 @@ var App = (function(){
 				checkbox = '<input type="checkbox" class="pull-left" checked >';
 			}
 			// set new properties to new object for template context
-			var templateContext = this.model.toJSON();
-			templateContext.badge = badge;
-			templateContext.index = index;
-			templateContext.titleHtml = titleHtml;
+			var templateContext = this.model.toJSON(); // model properties
+			templateContext.badge = badge; // badge html
+			templateContext.index = index; // current model index
+			templateContext.titleHtml = titleHtml; // title html - if it's checked > <strike> tag
 			templateContext.checkbox = checkbox;
 
 			var templateSource = $(this.template).html();
