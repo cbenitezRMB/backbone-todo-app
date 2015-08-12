@@ -149,6 +149,8 @@ var App = (function(){
 		editTask: function(){
 			this.removeErrorMessage();
 			var newTitle = prompt('What would you like to change the text to?', this.model.get('title'));
+			if(newTitle === null)
+				return;
 			if(!$.trim(newTitle)){
 				this.throwError('Enter a title for the task');
 				return;
