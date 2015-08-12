@@ -272,14 +272,22 @@ var App = (function(){
 
 	App.Views.TaskDetails = Backbone.View.extend({
 		el: '#detailsModal',
+		events: {
+			'click #editDescription': 'editDescription',
+			'click #cancelDescriptionEdit': 'setInitialModalState',
+			'click .close-details': 'setInitialModalState',
+			'click #saveNewDescription': 'saveNewDescription'
+		},
 		initialize: function(){
 			App.vent.on('task-details:show', this.render, this);
 			App.vent.on('task-details:hide', this.hideDetailsModal, this);
 		},
 		render: function(taskIndex){
+			console.log('render');
 			var $selector = this.$el;
 			$selector.find(".modal-title").text(this.getTask(taskIndex).get('title'));
-			$selector.find('.modal-body').text(this.getTask(taskIndex).get('description'));
+			$selector.find('.modal-body .text').text(this.getTask(taskIndex).get('description'));
+			$selector.find('textarea').val(this.getTask(taskIndex).get('description'));
 			$selector.modal('show');
 		},
 		hideDetailsModal: function(){
@@ -288,6 +296,35 @@ var App = (function(){
 		getTask: function(item){
 			return this.collection.at(item-1);
 		},
+		editDescription: function(e){
+			var textarea = this.$el.find('textarea');
+			textarea.removeClass('hidden').focus();
+			this.$el.find(".text").addClass('hidden');
+			$(e.currentTarget).addClass('hidden');
+			this.$el.find("#cancelDescriptionEdit, #saveNewDescription").removeClass('hidden');
+		},
+		setInitialModalState: function(){
+			var textarea = this.$el.find('textarea');
+			textarea.addClass('hidden');
+			textarea.val(this.$el.find(".text").text());
+			this.$el.find(".text").removeClass('hidden');
+			this.$el.find('#editDescription').removeClass('hidden');
+			this.$el.find("#cancelDescriptionEdit, #saveNewDescription").addClass('hidden');
+		},
+		saveNewDescription: function(){
+			var newDescription = this.$el.find('textarea').val(),
+				oldDescription = this.$el.find('.text').text();
+				console.log(typeof oldDescription);
+				console.log(oldDescription);
+			var myModel = this.collection.findWhere({description: oldDescription});
+			console.log(this.$el.find('textarea').val());
+			myModel.set('description', newDescription);
+			// restore states
+			this.$el.find('textarea').addClass('hidden');
+			this.$el.find(".text").text(newDescription).removeClass('hidden');
+			this.$el.find("#cancelDescriptionEdit, #saveNewDescription").addClass('hidden');
+			this.$el.find("#editDescription").removeClass('hidden');
+		}
 	});
 	
 

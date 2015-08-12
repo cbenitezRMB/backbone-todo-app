@@ -73,9 +73,15 @@
 								<h4 class="modal-title" id="myModalLabel">Modal title</h4>
 							</div>
 							<div class="modal-body">
-							Muchas cosas
+								<span class="text"></span>
+								<form action="#" class="form-block">
+									<textarea class="form-control hidden" name="" id="newDescription" rows="3"></textarea>
+								</form>
 							</div>
 							<div class="modal-footer">
+							<button type="button" id="saveNewDescription" class="btn btn-success hidden">Save</button>
+							<button type="button" id="cancelDescriptionEdit" class="btn btn-danger hidden">Cancel</button>
+							<button type="button" id="editDescription" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Edit description</button>
 							<a type="button" href="#home" class="btn btn-primary close-details">Close</a>
 							</div>
 						</div>
