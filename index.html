@@ -43,7 +43,9 @@
 					<textarea class="col-sm-5 form-control" placeholder="Enter a description for your new task..." rows="3"></textarea>
 					<div class="clearfix"></div>
 					<br>
-					<input type="submit" value="Add task" class="btn btn-primary">
+					<button type="submit" class="btn btn-primary">
+						<span class="glyphicon glyphicon-plus"></span> Create new task
+					</button>
 					
 				</form>
 				<div class="clearfix"></div>
@@ -58,9 +60,9 @@
 								</div>
 								<div class="col-sm-4">
 									<a class="btn" href="#task-details/{{ index }}">Details</a>
-									<button type="button" class="btn btn-warning" id="edit">edit</button>
+									<button type="button" class="btn btn-warning" id="edit"><span class="glyphicon glyphicon-pencil"></span></button>
 									 - 
-									<button type="button" class="btn btn-danger" id="delete">delete</button>
+									<button type="button" class="btn btn-danger" id="delete"><span class="glyphicon glyphicon-trash"></span> </button>
 								</div>
 							</li>
 						</script>

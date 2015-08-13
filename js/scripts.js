@@ -64,7 +64,8 @@ var App = (function(){
 		routes: {
 			'':'home',
 			'home':'home',
-			'task-details/(:taskId)': 'showTaskDetails',
+			'task-details/': 'home',
+			'task-details/:taskId': 'showTaskDetails',
 			'*notFound': 'home'
 		},
 		home: function(){
@@ -83,7 +84,7 @@ var App = (function(){
 			done: false,
 			description: 'No description added'
 		},
-		
+
 		url: '/data/tasks.json'
 	});
 
@@ -107,7 +108,7 @@ var App = (function(){
 			this.editButton = Button({
 				classNames: 'btn btn-warning',
 				id: 'edit',
-				text: 'edit'
+				text: '<span class="glyphicon glyphicon-pencil"></span>'
 			});
 			this.deleteButton = Button({
 				classNames: 'btn btn-danger',
@@ -143,7 +144,7 @@ var App = (function(){
 				'paddingLeft': 0,
 				'listStyleType': 'none'
 			});
-			
+
 			return this;
 		},
 		editTask: function(){
@@ -202,7 +203,7 @@ var App = (function(){
 		},
 		addOne: function(taskModel, taskIndex){
 			if(typeof(taskIndex) == 'object')
-				taskIndex = this.collection.length - 1; 
+				taskIndex = this.collection.length - 1;
 			var newTaskView = new App.Views.Task({ model:taskModel });
 			this.$el.append(newTaskView.render(taskIndex+1).el);
 			localStorage.setItem(App.config.localStorageName, JSON.stringify(this.collection.toJSON()));
@@ -257,7 +258,7 @@ var App = (function(){
 				this.collection.add(newTask);
 				input.val('').focus();
 			}
-			
+
 		},
 
 		throwError: function(errorMsg){
@@ -326,7 +327,7 @@ var App = (function(){
 			this.$el.find("#editDescription").removeClass('hidden');
 		}
 	});
-	
+
 
 	if(localStorage.getItem(App.config.localStorageName) === null || localStorage.getItem(App.config.localStorageName) === undefined){
 		tasks = new App.Collections.Tasks([
@@ -361,7 +362,7 @@ var App = (function(){
 		tasks = new App.Collections.Tasks(tasksListFromLocalStorage);
 	}
 
-	// Router 
+	// Router
 	new App.Router.Tasks();
 
 	// Instancias de las vistas creadas
@@ -373,5 +374,5 @@ var App = (function(){
 
 	Backbone.history.start();
 	return App;
-	
+
 })();
