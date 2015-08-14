@@ -137,6 +137,8 @@ var App = (function(){
 			var templateSource = $(this.template).html();
 			var templateCompiled = Handlebars.compile(templateSource);
 			var templateResult = templateCompiled(templateContext);
+
+			
 			this.$el.html(templateResult);
 			this.$el.css({
 				'float': 'left',
@@ -169,6 +171,7 @@ var App = (function(){
 		},
 		removeTaskFromView: function(){
 			this.$el.remove();
+			App.vent.trigger('check:tasks-list');
 		},
 		throwError: function(errorMsg){
 			var errorContent2 = new domElement({
@@ -189,6 +192,7 @@ var App = (function(){
 		tagName: 'ul',
 		initialize: function(){
 			App.vent.on('tasks-list', this.render, this);
+			// App.vent.on('check:tasks-list', this.checkIfTasks, this);
 			this.listenTo(this.collection, 'change', this.render);
 			this.listenTo(this.collection, 'add', this.addOne);
 			this.listenTo(this.collection, 'destroy', this.render);
@@ -210,6 +214,15 @@ var App = (function(){
 		},
 		saveToLocalStorage: function(){
 			localStorage.setItem(App.config.localStorageName, JSON.stringify(this.collection.toJSON()));
+			this.checkIfTasks();
+		},
+		checkIfTasks: function(){
+			if(this.collection.size() === 0){
+				var message = 'Currently you don\'t have tasks. Click on the top button to add a new task.';
+				if(!$('.myTasks .alert').length){
+					$(".myTasks").prepend('<div class="alert alert-info" role="alert"><strong>Hey!</strong>'+message+'</div>');
+				}
+			}
 		}
 	});
 
@@ -256,7 +269,9 @@ var App = (function(){
 					});
 				}
 				this.collection.add(newTask);
+				this.checkIfTasksOnAdd();
 				input.val('').focus();
+				textarea.val('');
 			}
 
 		},
@@ -268,6 +283,12 @@ var App = (function(){
 
 		removeErrorMessage: function(){
 			$("#errors div").remove();
+		},
+
+		checkIfTasksOnAdd: function(){
+			if(this.collection.size() > 0 && $('.myTasks .alert').length){
+				$('.myTasks .alert').remove();
+			}
 		}
 	});
 
@@ -284,7 +305,6 @@ var App = (function(){
 			App.vent.on('task-details:hide', this.hideDetailsModal, this);
 		},
 		render: function(taskIndex){
-			console.log('render');
 			var $selector = this.$el;
 			$selector.find(".modal-title").text(this.getTask(taskIndex).get('title'));
 			$selector.find('.modal-body .text').text(this.getTask(taskIndex).get('description'));
@@ -315,10 +335,7 @@ var App = (function(){
 		saveNewDescription: function(){
 			var newDescription = this.$el.find('textarea').val(),
 				oldDescription = this.$el.find('.text').text();
-				console.log(typeof oldDescription);
-				console.log(oldDescription);
 			var myModel = this.collection.findWhere({description: oldDescription});
-			console.log(this.$el.find('textarea').val());
 			myModel.set('description', newDescription);
 			// restore states
 			this.$el.find('textarea').addClass('hidden');
