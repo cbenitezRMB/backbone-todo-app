@@ -118,13 +118,13 @@ var App = (function(){
 
 		},
 		render: function(index){
-			var badge = '<span class="badge">'+index+'</span>  ',
+			var badge = '<span class="badge" style="background-color: green;">'+index+'</span>  ',
 				titleHtml = this.model.get('title'),
 				checkbox = '<input type="checkbox" class="pull-left" >',
 				details = '<a class="btn" href="#task-details/'+index+'">Details</a>';
 			if(this.model.get('done')){
-				badge = '<span style="background-color: green;" class="badge">'+index+'</span>  ';
-				titleHtml = '<strike>'+this.model.get('title')+'</strike>';
+				badge = '<span class="badge">'+index+'</span>  ';
+				titleHtml = '<strike style="color: #979797">'+this.model.get('title')+'</strike>';
 				checkbox = '<input type="checkbox" class="pull-left" checked >';
 			}
 			// set new properties to new object for template context
@@ -309,6 +309,9 @@ var App = (function(){
 			$selector.find(".modal-title").text(this.getTask(taskIndex).get('title'));
 			$selector.find('.modal-body .text').text(this.getTask(taskIndex).get('description'));
 			$selector.find('textarea').val(this.getTask(taskIndex).get('description'));
+			if(this.getTask(taskIndex).get('done')){
+				$selector.find('#editDescription').addClass('hidden');
+			}
 			$selector.modal('show');
 		},
 		hideDetailsModal: function(){
