@@ -338,6 +338,8 @@ var App = (function(){
 		saveNewDescription: function(){
 			var newDescription = this.$el.find('textarea').val(),
 				oldDescription = this.$el.find('.text').text();
+			if(!$.trim(newDescription))
+				newDescription = 'No description added.';
 			var myModel = this.collection.findWhere({description: oldDescription});
 			myModel.set('description', newDescription);
 			// restore states

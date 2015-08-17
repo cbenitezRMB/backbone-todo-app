@@ -2,12 +2,13 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-express');
 	grunt.loadNpmTasks('grunt-open');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 	var hostPort = 9000;
 	// Project configuration.
 	grunt.initConfig({
 		watch: {
 			scripts: {
-				files: ['js/*.js'],
+				files: ['src/js/*.js'],
 				options: {
 					livereload: true
 				}
@@ -26,6 +27,13 @@ module.exports = function(grunt) {
 		open: {
 			dev:{
 				path: 'http://localhost:'+hostPort
+			}
+		},
+		uglify: {
+			dist: {
+				files: {
+					'dist/scripts.js': ['js/scripts.js']
+				}
 			}
 		}
 	});
