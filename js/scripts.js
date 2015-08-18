@@ -9,6 +9,13 @@ var App = (function(){
 		config: {
 			localStorageName: 'todosTest1'
 		},
+		Utils: {
+			getCurrentDateAndHour: function(){
+				var dateObject = new Date(),
+					dateObjectMinutes = (dateObject.getMinutes() < 10) ? "0"+dateObject.getMinutes() : dateObject.getMinutes();
+				return dateObject.toLocaleDateString()+', '+ dateObject.getHours()+':'+dateObjectMinutes;
+			}
+		},
 		userLang: 'en',
 		langs: {}
 	};
@@ -195,10 +202,9 @@ var App = (function(){
 				this.throwError('Task title is too short. Min 4 characters');
 				return;
 			}
-			var dateObject = new Date(),
-				currentDateAndHourString = dateObject.toLocaleDateString()+', '+ dateObject.getHours()+':'+dateObject.getMinutes();
+			
 			this.model.set('title', newTitle);
-			this.model.set('modificationDate', currentDateAndHourString);
+			this.model.set('modificationDate', App.Utils.getCurrentDateAndHour());
 		},
 		deleteTaskFromCollection: function(){
 			var deleteDecision = confirm("Delete '"+this.model.get('title')+"' task.\nAre you sure?");
@@ -304,9 +310,7 @@ var App = (function(){
 						description: textarea.val()
 					});
 				}
-				var dateObject = new Date(),
-					currentDateAndHourString = dateObject.toLocaleDateString()+', '+ dateObject.getHours()+':'+dateObject.getMinutes();
-				newTask.set('creationDate', currentDateAndHourString);
+				newTask.set('creationDate', App.Utils.getCurrentDateAndHour());
 				this.collection.add(newTask);
 				this.checkIfTasksOnAdd();
 				input.val('').focus();
@@ -384,9 +388,7 @@ var App = (function(){
 				newDescription = 'No description added.';
 			var myModel = this.collection.findWhere({description: oldDescription});
 			myModel.set('description', newDescription);
-			var dateObject = new Date(),
-				currentDateAndHourString = dateObject.toLocaleDateString()+', '+ dateObject.getHours()+':'+dateObject.getMinutes();
-			myModel.set('modificationDate', currentDateAndHourString);
+			myModel.set('modificationDate', App.Utils.getCurrentDateAndHour());
 			App.vent.trigger('task-details:update:modificationDate', myModel);
 			// restore states
 			this.$el.find('textarea').addClass('hidden');
@@ -401,8 +403,7 @@ var App = (function(){
 
 
 	if(localStorage.getItem(App.config.localStorageName) === null || localStorage.getItem(App.config.localStorageName) === undefined){
-		var dateObject = new Date(),
-			currentDateAndHourString = dateObject.toLocaleDateString()+', '+ dateObject.getHours()+':'+dateObject.getMinutes();
+		var currentDateAndHourString = App.Utils.getCurrentDateAndHour();
 		tasks = new App.Collections.Tasks([
 			{
 				title: 'Learn Backbone.js',
