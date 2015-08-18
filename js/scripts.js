@@ -415,7 +415,7 @@ var App = (function(){
 		tasks = new App.Collections.Tasks([
 			{
 				title: 'Learn Backbone.js',
-				priority: 2,
+				priority: 6,
 				description: "Learn Backbone.js and all necesary functionalities to create a real-world JS App.",
 				creationDate: currentDateAndHourString
 			},
