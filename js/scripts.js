@@ -123,14 +123,11 @@ var App = (function(){
 				return '';
 			else
 				return App.langs[App.userLang].modified +''+ this.get('modificationDate');
-		},
-
-		url: '/data/tasks.json'
+		}
 	});
 
 	App.Collections.Tasks = Backbone.Collection.extend({
-		model: App.Models.Task,
-		url: 'data/tasks.json'
+		model: App.Models.Task
 	});
 
 	App.Views.Task = Backbone.View.extend({
@@ -240,18 +237,32 @@ var App = (function(){
 		className: 'list',
 		initialize: function(){
 			App.vent.on('tasks-list', this.render, this);
-			// App.vent.on('check:tasks-list', this.checkIfTasks, this);
+			App.vent.on('sortCollection', this.sortCollection, this);
 			this.listenTo(this.collection, 'change', this.render);
 			this.listenTo(this.collection, 'add', this.addOne);
 			this.listenTo(this.collection, 'destroy', this.render);
 		},
-		render: function(){
-			this.$el.html("");
-			this.collection.each(this.addOne, this);
-			this.$el.css({
-				'paddingLeft': 0
-			});
-			this.saveToLocalStorage();
+		render: function(collectionToRender, shouldSort){
+			console.log(typeof shouldSort);
+			if(typeof shouldSort === 'boolean'){
+
+				this.$el.html("");
+				var tempCollection = new App.Collections.Tasks(collectionToRender);
+				this.collection.reset(collectionToRender);
+				this.collection.each(this.addOne, this);
+				this.$el.css({
+					'paddingLeft': 0
+				});
+			}else{
+				console.log('render normal');
+				this.$el.html("");
+				this.collection.each(this.addOne, this);
+				this.$el.css({
+					'paddingLeft': 0
+				});
+				this.saveToLocalStorage();
+			}
+
 		},
 		addOne: function(taskModel, taskIndex){
 			if(typeof(taskIndex) == 'object')
@@ -272,6 +283,10 @@ var App = (function(){
 					$(".myTasks .list-header").addClass("hidden");
 				}
 			}
+		},
+		sortCollection: function(sortBy){
+			var sorted = _.sortBy(this.collection.toJSON(), 'priority');
+			this.render(sorted, true);
 		}
 	});
 
@@ -409,6 +424,16 @@ var App = (function(){
 		}
 	});
 
+	App.Views.Sorter = Backbone.View.extend({
+		el: '#sorter',
+		events: {
+			'click #sort-priority': 'sort'
+		},
+		sort: function(ev){
+			App.vent.trigger('sortCollection', $(ev.currentTarget).data('sort-by'));
+		}
+	});
+
 
 	if(localStorage.getItem(App.config.localStorageName) === null || localStorage.getItem(App.config.localStorageName) === undefined){
 		var currentDateAndHourString = App.Utils.getCurrentDateAndHour();
@@ -458,6 +483,7 @@ var App = (function(){
 	var newTaskView = new App.Views.AddTask({ collection: tasks });
 	tasksView.render();
 	new App.Views.TaskDetails({ collection: tasks });
+	new App.Views.Sorter();
 	$(".myTasks").append(tasksView.el);
 
 	Backbone.history.start();
