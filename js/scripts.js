@@ -158,15 +158,16 @@ var App = (function(){
 
 		},
 		render: function(index){
-			var badge = '<span class="badge" style="background-color: green;">'+index+'</span>  ',
+			var badge = '<span class="bold">'+index+'</span>  ',
 				titleHtml = this.model.get('title'),
-				checkbox = '<input type="checkbox" class="pull-left" >',
+				checkbox = '<input type="checkbox" >',
 				details = '<a class="btn" href="#task-details/'+index+'">Details</a>';
 			if(this.model.get('done')){
-				badge = '<span class="badge">'+index+'</span>  ';
+				badge = '<span class="bold">'+index+'</span>  ';
 				titleHtml = '<strike style="color: #979797">'+this.model.get('title')+'</strike>';
-				checkbox = '<input type="checkbox" class="pull-left" checked >';
+				checkbox = '<input type="checkbox" checked >';
 			}
+
 			// set new properties to new object for template context
 			var templateContext = this.model.toJSON(); // model properties
 			templateContext.badge = badge; // badge html
@@ -184,7 +185,10 @@ var App = (function(){
 				'float': 'left',
 				'marginBottom': 15,
 				'paddingLeft': 0,
-				'listStyleType': 'none'
+				'listStyleType': 'none',
+				'paddingTop': 5,
+				'paddingBottom': 5,
+				'margin': 0
 			});
 
 			return this;
@@ -232,6 +236,7 @@ var App = (function(){
 
 	App.Views.Tasks = Backbone.View.extend({
 		tagName: 'ul',
+		className: 'list',
 		initialize: function(){
 			App.vent.on('tasks-list', this.render, this);
 			// App.vent.on('check:tasks-list', this.checkIfTasks, this);

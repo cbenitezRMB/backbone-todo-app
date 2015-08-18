@@ -4,6 +4,33 @@
 	<meta charset="UTF-8">
 	<title>Backbone example</title>
 	<link rel="stylesheet" href="css/bootstrap.css">
+	<style>
+		.bold {
+			font-weight: bold;
+		}
+		.list-header {
+			padding: 5px 0;
+			margin: 0;
+			float: left;
+			width: 100%;
+			border-bottom: 3px solid #7B7878;
+		}
+		.list-header li {
+			float: left;
+		}
+		.d-inline-block {
+			display: inline-block;
+		}
+		.list {
+			float: left;
+		}
+		.list > li:nth-child(odd){
+			background-color: #CBDFF8;
+		}
+		.list > li > div.padding {
+			padding-top: 5px;
+		}
+	</style>
 </head>
 <body>
 
@@ -52,13 +79,27 @@
 				<div id="errors"></div>
 				<div class="row">
 					<div class="myTasks col-sm-12">
+						<ul  class="bold list-header text-center" style="list-style: none;">
+							<li style="width: 3%;">#</li>
+							<li style="width: 8%;">¿Done?</li>
+							<!-- <li>Priority</li> -->
+							<li style="width: 45%;">Title</li>
+							<li style="width: 40%;">Actions</li>
+						</ul>
 						<script id="individual-task" type="text/x-handlebars-template">
-							<li class="col-sm-12">
-								{{{ checkbox }}}
-								<div class="col-sm-6">
-									{{{ badge }}} {{{ titleHtml }}}
+							
+								<div class="d-inline-block pull-left text-center padding" style="width: 3%;">
+									{{{ badge }}}
 								</div>
-								<div class="col-sm-4">
+								<div style="width: 8%;" class="pull-left text-center padding">
+									{{{ checkbox }}}
+								</div>
+								
+								
+								<div class="d-inline-block pull-left padding" style="width: 51%; padding-left: 15px;">
+									{{{ titleHtml }}}
+								</div>
+								<div class="col-sm-4 text-center">
 									<a class="btn" href="#task-details/{{ index }}">Details</a>
 									
 									{{#unless done}}
@@ -72,7 +113,7 @@
 									
 									<button type="button" class="btn btn-danger" id="delete"><span class="glyphicon glyphicon-trash"></span> </button>
 								</div>
-							</li>
+							
 						</script>
 					</div>
 				</div>
