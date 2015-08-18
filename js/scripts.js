@@ -8,8 +8,26 @@ var App = (function(){
 		vent: {},
 		config: {
 			localStorageName: 'todosTest1'
-		}
+		},
+		userLang: 'en',
+		langs: {}
 	};
+
+	App.langs.es = {
+		days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+		months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+		created: 'Creado: '
+	};
+
+	App.langs.en = {
+		days: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+		months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		created: 'Created: '
+	};
+
+	if(navigator.language === 'es'){
+		App.userLang = navigator.language;
+	}
 
 	var tasks, tasksListFromLocalStorage;
 	var Button = function(config){
@@ -82,7 +100,17 @@ var App = (function(){
 			title: 'No title',
 			priority: 0,
 			done: false,
-			description: 'No description added'
+			description: 'No description added',
+			creationDate: '',
+			modificationDate: ''
+		},
+
+		getCreationString: function(){
+			return App.langs[App.userLang].created +''+ this.get('creationDate');
+		},
+
+		getModificationString: function(){
+			return App.langs[App.userLang].created +''+ this.get('creationDate');
 		},
 
 		url: '/data/tasks.json'
@@ -312,6 +340,7 @@ var App = (function(){
 			if(this.getTask(taskIndex).get('done')){
 				$selector.find('#editDescription').addClass('hidden');
 			}
+			$selector.find(".modal-footer .creation").text(this.getTask(taskIndex).getCreationString());
 			$selector.modal('show');
 		},
 		hideDetailsModal: function(){
@@ -352,33 +381,43 @@ var App = (function(){
 
 
 	if(localStorage.getItem(App.config.localStorageName) === null || localStorage.getItem(App.config.localStorageName) === undefined){
+		var dateObject = new Date(),
+			// currentMinutes = (dateObject.getMinutes().toString.length === 1) ? '0'+dateObject.getMinutes() : dateObject.getMinutes(),
+			currentDateAndHourString = dateObject.toLocaleDateString()+', '+ dateObject.getHours()+':'+dateObject.getMinutes();
+		console.log(currentDateAndHourString);
 		tasks = new App.Collections.Tasks([
 			{
 				title: 'Learn Backbone.js',
 				priority: 2,
-				description: "Learn Backbone.js and all necesary functionalities to create a real-world JS App."
+				description: "Learn Backbone.js and all necesary functionalities to create a real-world JS App.",
+				creationDate: currentDateAndHourString
 			},
 			{
 				title: 'Add "Mark as done" functionality.',
 				priority: 2,
 				done: true,
-				description: 'The task must change its styles when the checkbox is clicked'
+				description: 'The task must change its styles when the checkbox is clicked',
+				creationDate: currentDateAndHourString
 			},
 			{
 				title: 'Create first JS App',
 				priority: 3,
 				done: true,
-				description: 'Lorem ipsum etc etc...'
+				description: 'Lorem ipsum etc etc...',
+				creationDate: currentDateAndHourString
 			},
 			{
 				title: 'Take a look at routes',
-				priority: 5
+				priority: 5,
+				creationDate: currentDateAndHourString
 			},
 			{
 				title: 'Validate forms in Backbone using a View',
-				priority: 5
+				priority: 5,
+				creationDate: currentDateAndHourString
 			}
 		]);
+
 	}else{
 		tasksListFromLocalStorage = JSON.parse((localStorage.getItem(App.config.localStorageName)));
 		tasks = new App.Collections.Tasks(tasksListFromLocalStorage);

@@ -8,7 +8,7 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		watch: {
 			scripts: {
-				files: ['src/js/*.js'],
+				files: ['js/scripts.js'],
 				options: {
 					livereload: true
 				}
@@ -37,5 +37,6 @@ module.exports = function(grunt) {
 			}
 		}
 	});
-	grunt.registerTask('server', ['express','open','watch']);
+	// grunt.registerTask('server', ['express','open','watch']);
+	grunt.registerTask('server', ['express','open', 'watch' ,'express-keepalive']);
 };
