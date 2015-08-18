@@ -296,6 +296,9 @@ var App = (function(){
 						description: textarea.val()
 					});
 				}
+				var dateObject = new Date(),
+					currentDateAndHourString = dateObject.toLocaleDateString()+', '+ dateObject.getHours()+':'+dateObject.getMinutes();
+				newTask.set('creationDate', currentDateAndHourString);
 				this.collection.add(newTask);
 				this.checkIfTasksOnAdd();
 				input.val('').focus();
@@ -381,10 +384,8 @@ var App = (function(){
 
 
 	if(localStorage.getItem(App.config.localStorageName) === null || localStorage.getItem(App.config.localStorageName) === undefined){
-		var dateObject = new Date(),
-			// currentMinutes = (dateObject.getMinutes().toString.length === 1) ? '0'+dateObject.getMinutes() : dateObject.getMinutes(),
+		var dateObject = new Date(),			
 			currentDateAndHourString = dateObject.toLocaleDateString()+', '+ dateObject.getHours()+':'+dateObject.getMinutes();
-		console.log(currentDateAndHourString);
 		tasks = new App.Collections.Tasks([
 			{
 				title: 'Learn Backbone.js',
