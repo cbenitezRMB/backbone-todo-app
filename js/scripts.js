@@ -182,6 +182,7 @@ var App = (function(){
 			
 			this.$el.html(templateResult);
 			this.$el.css({
+				'width': '100%',
 				'float': 'left',
 				'marginBottom': 15,
 				'paddingLeft': 0,
@@ -268,6 +269,7 @@ var App = (function(){
 				var message = 'Currently you don\'t have tasks. Click on the top button to add a new task.';
 				if(!$('.myTasks .alert').length){
 					$(".myTasks").prepend('<div class="alert alert-info" role="alert"><strong>Hey!</strong>'+message+'</div>');
+					$(".myTasks .list-header").addClass("hidden");
 				}
 			}
 		}
@@ -336,6 +338,7 @@ var App = (function(){
 		checkIfTasksOnAdd: function(){
 			if(this.collection.size() > 0 && $('.myTasks .alert').length){
 				$('.myTasks .alert').remove();
+				$('.myTasks .list-header').removeClass('hidden');
 			}
 		}
 	});
