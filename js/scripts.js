@@ -218,7 +218,6 @@ var App = (function(){
 		},
 		removeTaskFromView: function(){
 			this.$el.remove();
-			App.vent.trigger('check:tasks-list');
 		},
 		throwError: function(errorMsg){
 			var errorContent2 = new domElement({
@@ -240,7 +239,6 @@ var App = (function(){
 		className: 'list',
 		initialize: function(){
 			App.vent.on('tasks-list', this.render, this);
-			// App.vent.on('check:tasks-list', this.checkIfTasks, this);
 			this.listenTo(this.collection, 'change', this.render);
 			this.listenTo(this.collection, 'add', this.addOne);
 			this.listenTo(this.collection, 'destroy', this.render);
