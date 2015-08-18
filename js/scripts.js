@@ -16,13 +16,15 @@ var App = (function(){
 	App.langs.es = {
 		days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
 		months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-		created: 'Creado: '
+		created: 'Creado: ',
+		modified: 'Modificado: '
 	};
 
 	App.langs.en = {
 		days: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
 		months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-		created: 'Created: '
+		created: 'Created: ',
+		modified: 'Modified: '
 	};
 
 	if(navigator.language === 'es'){
@@ -110,7 +112,10 @@ var App = (function(){
 		},
 
 		getModificationString: function(){
-			return App.langs[App.userLang].created +''+ this.get('creationDate');
+			if(this.get('modificationDate') === '')
+				return '';
+			else
+				return App.langs[App.userLang].modified +''+ this.get('modificationDate');
 		},
 
 		url: '/data/tasks.json'
@@ -190,7 +195,10 @@ var App = (function(){
 				this.throwError('Task title is too short. Min 4 characters');
 				return;
 			}
-			this.model.set('title', newTitle)
+			var dateObject = new Date(),
+				currentDateAndHourString = dateObject.toLocaleDateString()+', '+ dateObject.getHours()+':'+dateObject.getMinutes();
+			this.model.set('title', newTitle);
+			this.model.set('modificationDate', currentDateAndHourString);
 		},
 		deleteTaskFromCollection: function(){
 			var deleteDecision = confirm("Delete '"+this.model.get('title')+"' task.\nAre you sure?");
@@ -334,6 +342,7 @@ var App = (function(){
 		initialize: function(){
 			App.vent.on('task-details:show', this.render, this);
 			App.vent.on('task-details:hide', this.hideDetailsModal, this);
+			App.vent.on('task-details:update:modificationDate', this.updateModificationDate, this);
 		},
 		render: function(taskIndex){
 			var $selector = this.$el;
@@ -344,6 +353,7 @@ var App = (function(){
 				$selector.find('#editDescription').addClass('hidden');
 			}
 			$selector.find(".modal-footer .creation").text(this.getTask(taskIndex).getCreationString());
+			$selector.find(".modal-footer .modified").text(this.getTask(taskIndex).getModificationString());
 			$selector.modal('show');
 		},
 		hideDetailsModal: function(){
@@ -374,17 +384,24 @@ var App = (function(){
 				newDescription = 'No description added.';
 			var myModel = this.collection.findWhere({description: oldDescription});
 			myModel.set('description', newDescription);
+			var dateObject = new Date(),
+				currentDateAndHourString = dateObject.toLocaleDateString()+', '+ dateObject.getHours()+':'+dateObject.getMinutes();
+			myModel.set('modificationDate', currentDateAndHourString);
+			App.vent.trigger('task-details:update:modificationDate', myModel);
 			// restore states
 			this.$el.find('textarea').addClass('hidden');
 			this.$el.find(".text").text(newDescription).removeClass('hidden');
 			this.$el.find("#cancelDescriptionEdit, #saveNewDescription").addClass('hidden');
 			this.$el.find("#editDescription").removeClass('hidden');
+		},
+		updateModificationDate: function(myModel){
+			this.$el.find(".modal-footer .modified").text(myModel.getModificationString());
 		}
 	});
 
 
 	if(localStorage.getItem(App.config.localStorageName) === null || localStorage.getItem(App.config.localStorageName) === undefined){
-		var dateObject = new Date(),			
+		var dateObject = new Date(),
 			currentDateAndHourString = dateObject.toLocaleDateString()+', '+ dateObject.getHours()+':'+dateObject.getMinutes();
 		tasks = new App.Collections.Tasks([
 			{
