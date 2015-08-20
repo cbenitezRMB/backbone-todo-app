@@ -414,14 +414,15 @@ var App = (function(){
 			{
 				title: 'Learn Backbone.js',
 				priority: 6,
+				done: true,
 				description: "Learn Backbone.js and all necesary functionalities to create a real-world JS App.",
 				creationDate: currentDateAndHourString
 			},
 			{
-				title: 'Add "Mark as done" functionality.',
+				title: 'Create a new TASK',
 				priority: 2,
-				done: true,
-				description: 'The task must change its styles when the checkbox is clicked',
+				done: false,
+				description: 'Use this app!',
 				creationDate: currentDateAndHourString
 			},
 			{
@@ -429,16 +430,6 @@ var App = (function(){
 				priority: 3,
 				done: true,
 				description: 'Lorem ipsum etc etc...',
-				creationDate: currentDateAndHourString
-			},
-			{
-				title: 'Take a look at routes',
-				priority: 5,
-				creationDate: currentDateAndHourString
-			},
-			{
-				title: 'Validate forms in Backbone using a View',
-				priority: 5,
 				creationDate: currentDateAndHourString
 			}
 		]);
